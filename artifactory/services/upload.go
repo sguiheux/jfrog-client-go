@@ -729,7 +729,9 @@ func (us *UploadService) createUploadAsZipFunc(uploadResult *utils.Result, targe
 			return us.readFilesAsZip(archiveDataReader, "Archiving", archiveData.uploadParams.Flat, nil, errorsQueue), nil
 		}
 		uploaded, e := us.uploadFileFromReader(getReaderFunc, targetUrlWithProps, archiveData.uploadParams, logMsgPrefix, details)
-
+		if e != nil {
+			return
+		}
 		if uploaded {
 			uploadResult.SuccessCount[threadId]++
 			if us.saveSummary {
