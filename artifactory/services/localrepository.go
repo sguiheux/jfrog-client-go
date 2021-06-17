@@ -161,6 +161,7 @@ func (lrs *LocalRepositoryService) Generic(params GenericLocalRepositoryParams) 
 
 type LocalRepositoryBaseParams struct {
 	Key                             string   `json:"key,omitempty"`
+	ProjectKey                      string   `json:"projectKey,omitempty"`
 	Rclass                          string   `json:"rclass"`
 	PackageType                     string   `json:"packageType,omitempty"`
 	Description                     string   `json:"description,omitempty"`
