@@ -1,6 +1,7 @@
 package artifactory
 
 import (
+	"fmt"
 	"io"
 
 	"github.com/jfrog/jfrog-client-go/auth"
@@ -334,9 +335,12 @@ func (sm *ArtifactoryServicesManagerImp) Copy(params ...services.MoveCopyParams)
 }
 
 func (sm *ArtifactoryServicesManagerImp) Move(params ...services.MoveCopyParams) (successCount, failedCount int, err error) {
+	fmt.Println("JfrogClient: Move")
 	moveService := services.NewMoveCopyService(sm.config.GetServiceDetails(), sm.client, services.MOVE)
+	fmt.Println("JfrogClient: Service Creation")
 	moveService.DryRun = sm.config.IsDryRun()
 	moveService.Threads = sm.config.GetThreads()
+	fmt.Println("JfrogClient: Move RUn")
 	return moveService.MoveCopyServiceMoveFilesWrapper(params...)
 }
 

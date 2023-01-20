@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"net/http"
 	"path"
 	"strconv"
@@ -56,6 +57,7 @@ func (mc *MoveCopyService) MoveCopyServiceMoveFilesWrapper(moveSpecs ...MoveCopy
 			}
 		}
 	}()
+	fmt.Println("JfrogClient: For moveSpec")
 	for i, moveSpec := range moveSpecs {
 		// Create reader for each spec.
 		var moveReader *content.ContentReader
@@ -66,6 +68,7 @@ func (mc *MoveCopyService) MoveCopyServiceMoveFilesWrapper(moveSpecs ...MoveCopy
 		moveReaders = append(moveReaders, &ReaderSpecTuple{moveReader, i})
 	}
 
+	fmt.Println("JfrogClient: merge Reader")
 	var tempAggregatedReader *content.ContentReader
 	tempAggregatedReader, err = mergeReaders(moveReaders, content.DefaultKey)
 	if err != nil {
@@ -77,6 +80,7 @@ func (mc *MoveCopyService) MoveCopyServiceMoveFilesWrapper(moveSpecs ...MoveCopy
 			err = e
 		}
 	}()
+	fmt.Println("JfrogClient: Aggregated reader")
 	aggregatedReader := tempAggregatedReader
 	if mc.moveType == MOVE {
 		// If move command, reduce top dir chain results.
@@ -91,6 +95,7 @@ func (mc *MoveCopyService) MoveCopyServiceMoveFilesWrapper(moveSpecs ...MoveCopy
 			err = e
 		}
 	}()
+	fmt.Println("JfrogClient: moveFiles")
 	successCount, failedCount, err = mc.moveFiles(aggregatedReader, moveSpecs)
 	if err != nil {
 		return
