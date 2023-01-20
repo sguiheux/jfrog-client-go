@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"strings"
 
 	clientutils "github.com/jfrog/jfrog-client-go/utils"
@@ -177,6 +178,8 @@ func (aql *Aql) UnmarshalJSON(value []byte) error {
 }
 
 func (params CommonParams) GetSpecType() (specType SpecType) {
+	fmt.Printf("%v", params)
+	fmt.Printf("[%s] [%s] [%s]\n", params.Build, params.Aql.ItemsFind, params.Pattern)
 	switch {
 	case params.Build != "" && params.Aql.ItemsFind == "" && (params.Pattern == "*" || params.Pattern == ""):
 		specType = BUILD
