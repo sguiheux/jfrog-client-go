@@ -59,8 +59,10 @@ func (mc *MoveCopyService) MoveCopyServiceMoveFilesWrapper(moveSpecs ...MoveCopy
 	}()
 	fmt.Println("JfrogClient: For moveSpec")
 	for i, moveSpec := range moveSpecs {
+		fmt.Printf("%d %+v", i, moveSpec)
 		// Create reader for each spec.
 		var moveReader *content.ContentReader
+		fmt.Println("Before get paths to move")
 		moveReader, err = mc.getPathsToMove(moveSpec)
 		if err != nil {
 			return
@@ -110,8 +112,10 @@ func (mc *MoveCopyService) MoveCopyServiceMoveFilesWrapper(moveSpecs ...MoveCopy
 }
 
 func (mc *MoveCopyService) getPathsToMove(moveSpec MoveCopyParams) (resultItems *content.ContentReader, err error) {
+	fmt.Println("Get Paths to move")
 	log.Info("Searching artifacts...")
 	var tempResultItems *content.ContentReader
+	fmt.Printf("Type: %s\n", moveSpec.GetSpecType())
 	switch moveSpec.GetSpecType() {
 	case utils.BUILD:
 		resultItems, err = utils.SearchBySpecWithBuild(moveSpec.GetFile(), mc)
@@ -139,8 +143,11 @@ func (mc *MoveCopyService) getPathsToMove(moveSpec MoveCopyParams) (resultItems 
 		return
 	}
 
+	fmt.Println("Result item length")
 	length, err := resultItems.Length()
+	fmt.Println("Log search")
 	utils.LogSearchResults(length)
+	fmt.Println("End log search item")
 	return
 }
 
