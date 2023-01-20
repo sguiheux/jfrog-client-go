@@ -122,7 +122,9 @@ func (mc *MoveCopyService) getPathsToMove(moveSpec MoveCopyParams) (resultItems 
 	case utils.AQL:
 		resultItems, err = utils.SearchBySpecWithAql(moveSpec.GetFile(), mc, utils.NONE)
 	case utils.WILDCARD:
+		fmt.Println("Inside wildcard")
 		moveSpec.SetIncludeDir(true)
+		fmt.Println("Search")
 		tempResultItems, err = utils.SearchBySpecWithPattern(moveSpec.GetFile(), mc, utils.NONE)
 		if err != nil {
 			return
@@ -133,7 +135,7 @@ func (mc *MoveCopyService) getPathsToMove(moveSpec MoveCopyParams) (resultItems 
 				err = e
 			}
 		}()
-
+		fmt.Println("Reduce move paths")
 		resultItems, err = reduceMovePaths(utils.ResultItem{}, tempResultItems, moveSpec.IsFlat(), clientutils.IsPlaceholdersUsed(moveSpec.Pattern, moveSpec.Target))
 		if err != nil {
 			return
