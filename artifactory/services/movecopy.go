@@ -125,7 +125,7 @@ func (mc *MoveCopyService) getPathsToMove(moveSpec MoveCopyParams) (resultItems 
 		fmt.Println("Search")
 		tempResultItems, err := utils.SearchBySpecWithPattern(moveSpec.GetFile(), mc, utils.NONE)
 		if err != nil {
-			return
+			return nil, err
 		}
 		defer func() {
 			e := tempResultItems.Close()
