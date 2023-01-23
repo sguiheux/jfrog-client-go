@@ -136,11 +136,11 @@ func (mc *MoveCopyService) getPathsToMove(moveSpec MoveCopyParams) (resultItems 
 		fmt.Println("Reduce move paths")
 		resultItems, err = reduceMovePaths(utils.ResultItem{}, tempResultItems, moveSpec.IsFlat(), clientutils.IsPlaceholdersUsed(moveSpec.Pattern, moveSpec.Target))
 		if err != nil {
-			return
+			return nil, err
 		}
 	}
 	if err != nil {
-		return
+		return nil, err
 	}
 
 	fmt.Println("Result item length")
@@ -148,7 +148,7 @@ func (mc *MoveCopyService) getPathsToMove(moveSpec MoveCopyParams) (resultItems 
 	fmt.Println("Log search")
 	utils.LogSearchResults(length)
 	fmt.Println("End log search item")
-	return
+	return resultItems, nil
 }
 
 func reduceMovePaths(readerItem utils.SearchBasedContentItem, cr *content.ContentReader, flat, withPlaceholders bool) (*content.ContentReader, error) {
