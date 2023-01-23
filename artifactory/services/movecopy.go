@@ -113,8 +113,6 @@ func (mc *MoveCopyService) MoveCopyServiceMoveFilesWrapper(moveSpecs ...MoveCopy
 
 func (mc *MoveCopyService) getPathsToMove(moveSpec MoveCopyParams) (resultItems *content.ContentReader, err error) {
 	fmt.Println("Get Paths to move")
-	log.Info("Searching artifacts...")
-	var tempResultItems *content.ContentReader
 	fmt.Printf("Type: %s\n", moveSpec.GetSpecType())
 	switch moveSpec.GetSpecType() {
 	case utils.BUILD:
@@ -125,7 +123,7 @@ func (mc *MoveCopyService) getPathsToMove(moveSpec MoveCopyParams) (resultItems 
 		fmt.Println("Inside wildcard")
 		moveSpec.SetIncludeDir(true)
 		fmt.Println("Search")
-		tempResultItems, err = utils.SearchBySpecWithPattern(moveSpec.GetFile(), mc, utils.NONE)
+		tempResultItems, err := utils.SearchBySpecWithPattern(moveSpec.GetFile(), mc, utils.NONE)
 		if err != nil {
 			return
 		}
@@ -329,6 +327,9 @@ func mergeReaders(arr []*ReaderSpecTuple, arrayKey string) (contentReader *conte
 		for item := new(utils.ResultItem); cr.NextRecord(item) == nil; item = new(utils.ResultItem) {
 			writeItem := &MoveResultItem{*item, tuple.MoveSpec}
 			cw.Write(*writeItem)
+		}
+		if err := cr.Close(); err != nil {
+			return nil, err
 		}
 		if err := cr.GetError(); err != nil {
 			return nil, err
