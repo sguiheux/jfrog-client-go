@@ -105,7 +105,7 @@ func (mc *MoveCopyService) MoveCopyServiceMoveFilesWrapper(moveSpecs ...MoveCopy
 }
 
 func (mc *MoveCopyService) getPathsToMove(moveSpec MoveCopyParams) (resultItems *content.ContentReader, err error) {
-	log.Info("Searching artifacts...")
+	// log.Info("Searching artifacts...")
 	var tempResultItems *content.ContentReader
 	switch moveSpec.GetSpecType() {
 	case utils.BUILD:
